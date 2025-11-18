@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Server Manager Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>AI Server Manager</h1>
+  <div class="box">
+    <h2>📊 Stats</h2>
+    <pre id="stats">Loading...</pre>
+  </div>
+  <div class="box">
+    <h2>📜 Logs</h2>
+    <pre id="logs">Loading...</pre>
+  </div>
+  <div class="box">
+    <h2>🎟 Tickets</h2>
+    <pre id="tickets">Loading...</pre>
+  </div>
+  <div class="box">
+    <h2>⚠️ Warnings</h2>
+    <pre id="warns">Loading...</pre>
+  </div>
+  <div class="box">
+    <h2>🛠 Send Command</h2>
+    <input id="cmd" placeholder="اكتب أمر" />
+    <button onclick="sendCmd()">إرسال</button>
+  </div>
+
+<script>
+async function loadAll() {
+  document.getElementById("stats").innerText = "Loading...";
+  try {
+    let s = await fetch('/api/stats').then(r=>r.json());
+    document.getElementById("stats").innerText = JSON.stringify(s, null, 2);
+    let logs = await fetch('/api/logs').then(r=>r.json());
+    document.getElementById("logs").innerText = logs.slice(-100).join("\n");
+    let tickets = await fetch('/api/tickets').then(r=>r.json());
+    document.getElementById("tickets").innerText = JSON.stringify(tickets, null, 2);
+    let warns = await fetch('/api/warnings').then(r=>r.json());
+    document.getElementById("warns").innerText = JSON.stringify(warns, null, 2);
+  } catch(e) {
+    console.error(e);
+  }
+}
+async function sendCmd(){
+  const cmd = document.getElementById('cmd').value;
+  await fetch('/api/command', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command:cmd})});
+  alert('تم الإرسال');
+}
+setInterval(loadAll, 2500);
+loadAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "token": "PUT_YOUR_BOT_TOKEN_HERE",
+  "openai_key": "PUT_OPENAI_KEY_HERE",
+  "owner_id": "YOUR_DISCORD_ID",
+  "welcome_channel": "WELCOME_CHANNEL_ID",
+  "engage_channel": "ENGAGE_CHANNEL_ID",
+  "ticket_category_name": "Tickets",
+  "ticket_role": "Support",
+  "prefix": "!",
+  "memory_limit": 80,
+  "dashboard_port": 3000
+}
